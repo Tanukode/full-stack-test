@@ -28,19 +28,7 @@ app.post('/users', [authJwt.verifyToken, authJwt.isAdmin], db.createUser)
 app.put('/users/:id', [authJwt.verifyToken, authJwt.isAdmin], db.updateUser)
 app.delete('/users/:id', [authJwt.verifyToken, authJwt.isAdmin], db.deleteUser)
 app.post('/login', login.Login)
-app.get('/test', (req, res) => {
-    res.status(200).send("Public Content.");
-})
-app.get('/test/viewer', [authJwt.verifyToken, authJwt.isViewer], (req, res) => {
-    res.status(200).send("Viewer Content.");
-});
 
-app.get('/test/audit', [authJwt.verifyToken, authJwt.isAudit], (req, res) => {
-    res.status(200).send("Audit Content.");
-});
-app.get('/test/admin', [authJwt.verifyToken, authJwt.isAdmin], (req, res) => {
-    res.status(200).send("Admin Content.");
-});
 
 
 

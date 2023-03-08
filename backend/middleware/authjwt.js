@@ -36,11 +36,9 @@ isAdmin = (req, res, next) => {
     pool.query("SELECT id FROM usuarios WHERE id = $1", [req.userId])
         .then(user => {
             const userId = user.rows[0].id
-            console.log(userId);
             pool.query("SELECT id_perfil FROM roles_usuarios WHERE id_usuario = $1", [userId])
                 .then(roles => {
                     const userRole = roles.rows
-                    console.log(userRole)
                     for (item of userRole) {
                         if (item.id_perfil === 0) {
                             next();
@@ -55,11 +53,9 @@ isAudit = (req, res, next) => {
     pool.query("SELECT id FROM usuarios WHERE id = $1", [req.userId])
         .then(user => {
             const userId = user.rows[0].id
-            console.log(userId);
             pool.query("SELECT id_perfil FROM roles_usuarios WHERE id_usuario = $1", [userId])
                 .then(roles => {
                     const userRole = roles.rows
-                    console.log(userRole)
                     for (item of userRole) {
                         if (item.id_perfil === 1) {
                             next();
@@ -74,11 +70,9 @@ isViewer = (req, res, next) => {
     pool.query("SELECT id FROM usuarios WHERE id = $1", [req.userId])
         .then(user => {
             const userId = user.rows[0].id
-            console.log(userId);
             pool.query("SELECT id_perfil FROM roles_usuarios WHERE id_usuario = $1", [userId])
                 .then(roles => {
                     const userRole = roles.rows
-                    console.log(userRole)
                     for (item of userRole) {
                         if (item.id_perfil === 2) {
                             next();
