@@ -59,10 +59,18 @@ const deleteUser = (req, res) => {
     )
 }
 
+function getUserByEmail(email){
+    pool.query('SELECT * FROM usuarios WHERE email = $1;', [email], (error, results) => {
+        if (error) throw error;    
+        res.status(200).json(results.rows)
+    });
+}
+
 module.exports = {
     getUsers,
     getUserById,
     createUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    getUserByEmail
 }

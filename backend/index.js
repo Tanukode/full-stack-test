@@ -1,9 +1,13 @@
-const express = require('express')
-const db = require('./queries')
-const bodyParser = require('body-parser')
-const app = express()
-const port = 3000
-const cors = require('cors')
+const express = require('express');
+const db = require('./queries');
+const bodyParser = require('body-parser');
+const app = express();
+const port = 3000;
+const cors = require('cors');
+
+const login = require('./controller/login');
+const auth = require('./middleware/authjwt.js');
+const authJwt = require('./middleware/authjwt.js');
 
 app.use(cors());
 
@@ -18,11 +22,27 @@ app.get('/', (req, res) => {
     res.json({ info: 'CRUD REST api' })
 })
 
-app.get('/users', db.getUsers)
-app.get('/users/:id', db.getUserById)
-app.post('/users', db.createUser)
-app.put('/users/:id', db.updateUser)
-app.delete('/users/:id', db.deleteUser)
+app.get('/users', db.getUsers, [authJwt.verifyToken])
+app.get('/users/:id', db.getUserById,[authJwt.verifyToken])
+app.post('/users', [authJwt.verifyToken, authJwt.isAdmin], db.createUser)
+app.put('/users/:id', [authJwt.verifyToken, authJwt.isAdmin], db.updateUser)
+app.delete('/users/:id', [authJwt.verifyToken, authJwt.isAdmin], db.deleteUser)
+app.post('/login', login.Login)
+app.get('/test', (req, res) => {
+    res.status(200).send("Public Content.");
+})
+app.get('/test/viewer', [authJwt.verifyToken, authJwt.isViewer], (req, res) => {
+    res.status(200).send("Viewer Content.");
+});
+
+app.get('/test/audit', [authJwt.verifyToken, authJwt.isAudit], (req, res) => {
+    res.status(200).send("Audit Content.");
+});
+app.get('/test/admin', [authJwt.verifyToken, authJwt.isAdmin], (req, res) => {
+    res.status(200).send("Admin Content.");
+});
+
+
 
 
 app.listen(port, () => {
