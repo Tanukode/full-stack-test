@@ -1,62 +1,76 @@
-<h1>Dashboard de usuarios</h1>
-<div>
-    <button (click)="ShowUsers()">visualizar usuarios</button>
-</div>
-
-<table id="tabla-usuarios" *ngIf="res">
-    <tr>
-        <th>
-            Nombre Completo
-        </th>
-        <th>
-            Correo Electronico
-        </th>
-        <th>
-            Contraseña
-        </th>
-        <th id="ver">
-
-        </th>
-        <th id="eliminar">
-
-        </th>
-    </tr>
-    <tr *ngFor="let item of res">
-        <td>
-            {{item.nombre_completo}}
-        </td>
-        <td>
-            {{item.email}}
-        </td>
-        <td>
-            {{item.password}}
-        </td>
-        <td>
-            <button (click)="ShowSingleUser(item.id)">ver</button>
-        </td>
-        <td>
-            <button (click)="DeleteUser(item.id)">eliminar</button>
-        </td>
-    </tr>
-</table>
-<div *ngIf="singleUser">
-    <div>
-        <h4>Datos Usuario</h4>
-
-        id: {{singleUser.id}} <br>
-        nombre: <input type="text" [formControl]="singleUserName"> <br>
-        email: <input type="text" [formControl]="singleUserMail"><br>
-        contraseña: <input type="text" [formControl]="singleUserPassword"> <br>
-
+<div class="container">
+    <div class="row justify-content-sm-center">
+        <div class="col-12 col-sm-6">
+            <h1>Dashboard de usuarios</h1>
+        </div>
     </div>
-    <div>
-        <button (click)="UpdateUser(this.singleUserId.value, this.singleUserName.value, this.singleUserMail.value, this.singleUserPassword.value)">modificar</button>
+    <button class="btn btn-link" (click)="ShowUsers()">ver usuarios</button>
+
+
+
+
+
+    <table class="table" id="tabla-usuarios" *ngIf="res">
+        <tr>
+            <th>
+                Nombre Completo
+            </th>
+            <th>
+                Correo Electronico
+            </th>
+            <th>
+                Contraseña
+            </th>
+            <th id="ver">
+
+            </th>
+            <th id="eliminar">
+
+            </th>
+        </tr>
+        <tr *ngFor="let item of res">
+            <td>
+                {{item.nombre_completo}}
+            </td>
+            <td>
+                {{item.email}}
+            </td>
+            <td>
+                {{item.password}}
+            </td>
+            <td>
+                <button class="btn btn-link" (click)="ShowSingleUser(item.id)">ver</button>
+            </td>
+            <td>
+                <button class="btn btn-link" (click)="DeleteUser(item.id)">eliminar</button>
+            </td>
+        </tr>
+    </table>
+    <div class="row justify-content-sm-center my-3" *ngIf="singleUser">
+        <div class="col-12 col-sm-6">
+            <h4>Datos Usuario</h4>
+            <form name="update-user">
+                <div class="form-group m-3">
+                    
+                    id: {{singleUser.id}} <br>
+                    nombre: <input type="text" class="form-control" [formControl]="singleUserName"> <br>
+                    email: <input type="text" class="form-control" [formControl]="singleUserMail"><br>
+                    contraseña: <input type="text" class="form-control" [formControl]="singleUserPassword"> <br>
+                </div>
+            </form>
+            <button class="btn btn-link"
+                (click)="UpdateUser(this.singleUserId.value, this.singleUserName.value, this.singleUserMail.value, this.singleUserPassword.value)">modificar</button>
+        </div>
     </div>
-</div>
-<div>
-    <h3>creación de usuario</h3>
-    Nombre<input type="text" [formControl]="newUserName"><br>
-    Correo<input type="text" [formControl]="newUserMail"><br>
-    Contraseña<input type="text" [formControl]="newUserPassword"><br>
-    <button (click)="InsertUser(this.newUserName.value, this.newUserMail.value, this.newUserPassword.value)">Agregar usuario</button>
+    <div class="row justify-content-sm-center my-3">
+        <div class="col-12 col-sm-6">
+            <h4>creación de usuario</h4>
+            Nombre<input type="text" class="form-control" [formControl]="newUserName"><br>
+            Correo<input type="text" class="form-control" [formControl]="newUserMail"><br>
+            Contraseña<input type="text" class="form-control" [formControl]="newUserPassword"><br>
+            <button
+                (click)="InsertUser(this.newUserName.value, this.newUserMail.value, this.newUserPassword.value)">Agregar
+                usuario</button>
+        </div>
+    </div>
 </div>

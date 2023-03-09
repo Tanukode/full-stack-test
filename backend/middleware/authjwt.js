@@ -16,7 +16,7 @@ const pool = new Pool({
 
 verifyToken = (req, res, next) => {
 
-    let token = req.headers["x-access-token"];
+    let token = req.headers["authorization"].split('Bearer ')[1];
 
     if (!token) {
         return res.status(403).send({ message: "forbidden" });

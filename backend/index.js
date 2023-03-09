@@ -9,7 +9,11 @@ const login = require('./controller/login');
 const auth = require('./middleware/authjwt.js');
 const authJwt = require('./middleware/authjwt.js');
 
-app.use(cors());
+var corsOptions = {
+    origin: 'http://localhost:4200',
+    credentials: true
+};
+app.use(cors(corsOptions));
 
 app.use(bodyParser.json())
 app.use(
@@ -28,10 +32,6 @@ app.post('/users', [authJwt.verifyToken, authJwt.isAdmin], db.createUser)
 app.put('/users/:id', [authJwt.verifyToken, authJwt.isAdmin], db.updateUser)
 app.delete('/users/:id', [authJwt.verifyToken, authJwt.isAdmin], db.deleteUser)
 app.post('/login', login.Login)
-
-
-
-
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)

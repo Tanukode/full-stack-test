@@ -44,11 +44,9 @@ exports.Login = async (req, res) => {
 
     for (let item of getRoles.rows) {
         roles.push(item.id_perfil);
-        console.log(item.id_perfil);
     }
 
 
-    console.log(roles);
     var token = jwt.sign({ id: user.id, roles: roles }, config.secret, {
         expiresIn: 86400
     })

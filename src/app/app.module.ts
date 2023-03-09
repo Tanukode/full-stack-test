@@ -6,8 +6,10 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { HttpRequestInterceptor } from '../_helpers/http.interceptor'
 
 
 @NgModule({
@@ -23,7 +25,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [HttpRequestInterceptor,{
+    provide: HTTP_INTERCEPTORS,
+    useClass: HttpRequestInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

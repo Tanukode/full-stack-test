@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { GetUsersService, UserData } from '../get-users.service';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
+
+import { AuthService } from '../_services/auth.service';
+import { StorageService } from '../_services/storage.service'
 
 @Component({
   selector: 'app-user-dashboard',
@@ -26,7 +29,7 @@ export class UserDashboardComponent {
   newUserPassword = new FormControl();
 
 
-  constructor(private userService: GetUsersService) { }
+  constructor(private userService: GetUsersService, private authService: AuthService, private storageService: StorageService) { }
 
   ShowUsers() {
     this.userService.GetUsers().
