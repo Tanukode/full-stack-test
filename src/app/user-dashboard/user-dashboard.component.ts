@@ -1,35 +1,48 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GetUsersService, UserData } from '../get-users.service';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms';
 
-import { AuthService } from '../_services/auth.service';
-import { StorageService } from '../_services/storage.service'
+
 
 @Component({
   selector: 'app-user-dashboard',
   templateUrl: './user-dashboard.component.html',
   styleUrls: ['./user-dashboard.component.css']
 })
-export class UserDashboardComponent {
+export class UserDashboardComponent implements OnInit {
+  updateForm: FormGroup;
+  updateSubmit: boolean = false;
+
+  createForm: FormGroup;
+  createSubmit: boolean= false;
+
   res: UserData[] | undefined;
   headers: string[] = [];
   error: any;
 
   showUsers: boolean = true;
 
-  singleUser: UserData | undefined;
+  singleUser: UserData | undefined;  
+  newUser:UserData|undefined;
 
-  singleUserId = new FormControl();
-  singleUserName = new FormControl();
-  singleUserMail = new FormControl();
-  singleUserPassword = new FormControl();
+  constructor(private userService: GetUsersService, private fb: FormBuilder) {
+    this.updateForm = this.fb.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.email, Validators.required]],
+      password: ['', Validators.required],      
+    },{});
+    this.createForm = this.fb.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.email, Validators.required]],
+      password: ['', Validators.required],      
+    },{});
 
-  newUserName = new FormControl();
-  newUserMail = new FormControl();
-  newUserPassword = new FormControl();
+  }
 
 
-  constructor(private userService: GetUsersService, private authService: AuthService, private storageService: StorageService) { }
+
+  ngOnInit() {
+  }
 
   ShowUsers() {
     this.userService.GetUsers().
@@ -44,10 +57,7 @@ export class UserDashboardComponent {
       .subscribe(data => {
         for (let item of data) {
           this.singleUser = item;
-          this.singleUserName = new FormControl(this.singleUser.nombre_completo);
-          this.singleUserId = new FormControl(this.singleUser.id);
-          this.singleUserMail = new FormControl(this.singleUser.email);
-          this.singleUserPassword = new FormControl(this.singleUser.password);
+                   
         }
 
       })
@@ -59,6 +69,10 @@ export class UserDashboardComponent {
       });
   }
   InsertUser(userName: string, userMail: string, userPassword: string) {
+    this.createSubmit = true;
+    if(!this.createForm.valid){
+      return;
+    }
     this.userService.InsertUser(userName, userMail, userPassword)
       .subscribe(data => {
         for (let item of data) {
@@ -67,8 +81,12 @@ export class UserDashboardComponent {
       });
   }
   UpdateUser(userId: string, userName: string, userMail: string, userPassword: string) {
+    this.updateSubmit = true;
+    if(!this.updateForm.valid){
+      return;
+    }
     this.userService.UpdateUser(userId, userName, userMail, userPassword)
-      .subscribe(data =>{
+      .subscribe(data => {
         console.log("modified user")
       })
   }

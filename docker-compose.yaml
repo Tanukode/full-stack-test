@@ -1,0 +1,34 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    hostname: db
+    ports: 
+     - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=prueba-full-stack
+      - POSTGRES_PASSWORD=test
+    volumes:
+      - ./sql/script.sql:/docker-entrypoint-initdb.d/1-schema.sql
+  backend:
+    depends_on:
+      - db
+    image: backendtest  
+    environment:
+      PGUSER: postgres
+      PGHOST: db
+      PGPASSWORD: test
+      PGDATABASE: prueba-full-stack
+      PGPORT: 5432
+    ports:
+      - 3000:3000
+  frontend:
+    image: frontendtest
+    ports:
+      - 4200:80
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080

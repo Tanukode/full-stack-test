@@ -6,7 +6,7 @@ import { single } from 'rxjs';
 export interface UserData {
   id: string;
   nombre_completo: string;
-  email: number;
+  email: string;
   password: string;
 }
 
