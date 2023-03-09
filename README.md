@@ -19,3 +19,7 @@
       ```
       docker-compose -f docker-compose.yaml up
       ```
+
+- Ingresar por medio de la url "http://localhost:4200/login"
+    - Ingresar con los datos: email: "gerentin.mcadminson@gmail.com" y pw: "randompassword"
+    - El usuario cuenta con el rol Admin por lo que puede crear modificar y eliminar usuarios
